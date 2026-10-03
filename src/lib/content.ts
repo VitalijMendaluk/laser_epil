@@ -1,23 +1,26 @@
 import "server-only";
-import { unstable_cache } from "next/cache";
+import { cache } from "react";
 import type { Locale } from "@/i18n/routing";
 import { SETTING_FIELDS, TEXT_FIELDS, type SettingKey } from "./content-schema";
 import { pickLocalized } from "./locales";
 import { prisma } from "./prisma";
 
+/*
+ * Data is read fresh from the database on every request (React `cache` only
+ * dedupes queries within one render), so admin edits appear on the site at once
+ * on any host. The tags are still revalidated by admin actions.
+ */
 export const CONTENT_TAG = "content";
 export const SERVICES_TAG = "services";
 export const TESTIMONIALS_TAG = "testimonials";
 export const RESULTS_TAG = "results";
 export const FAQ_TAG = "faq";
 
-const loadContent = unstable_cache(
+const loadContent = cache(
   async () => {
     const [texts, settings] = await Promise.all([prisma.siteText.findMany(), prisma.setting.findMany()]);
     return { texts, settings };
-  },
-  ["site-content"],
-  { tags: [CONTENT_TAG], revalidate: 3600 },
+  }
 );
 
 export type SiteSettings = Record<SettingKey, string>;
@@ -46,7 +49,7 @@ export async function getSiteContent(locale: Locale) {
 
 /* ── Services ─────────────────────────────────────────── */
 
-export const getPublicServices = unstable_cache(
+export const getPublicServices = cache(
   async () =>
     prisma.service.findMany({
       where: { isVisible: true },
@@ -65,9 +68,7 @@ export const getPublicServices = unstable_cache(
         durationMin: true,
         image: true,
       },
-    }),
-  ["public-services"],
-  { tags: [SERVICES_TAG], revalidate: 3600 },
+    })
 );
 
 export type PublicService = Awaited<ReturnType<typeof getPublicServices>>[number];
@@ -89,22 +90,16 @@ export type LocalizedService = ReturnType<typeof localizeService>;
 
 /* ── Testimonials, Before/After, FAQ ──────────────────── */
 
-export const getPublicTestimonials = unstable_cache(
-  async () => prisma.testimonial.findMany({ where: { isVisible: true }, orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }] }),
-  ["public-testimonials"],
-  { tags: [TESTIMONIALS_TAG], revalidate: 3600 },
+export const getPublicTestimonials = cache(
+  async () => prisma.testimonial.findMany({ where: { isVisible: true }, orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }] })
 );
 
-export const getPublicResults = unstable_cache(
-  async () => prisma.beforeAfter.findMany({ where: { isVisible: true }, orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }] }),
-  ["public-results"],
-  { tags: [RESULTS_TAG], revalidate: 3600 },
+export const getPublicResults = cache(
+  async () => prisma.beforeAfter.findMany({ where: { isVisible: true }, orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }] })
 );
 
-export const getPublicFaq = unstable_cache(
-  async () => prisma.faqItem.findMany({ where: { isVisible: true }, orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }] }),
-  ["public-faq"],
-  { tags: [FAQ_TAG], revalidate: 3600 },
+export const getPublicFaq = cache(
+  async () => prisma.faqItem.findMany({ where: { isVisible: true }, orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }] })
 );
 
 export async function getLocalizedExtras(locale: Locale) {
