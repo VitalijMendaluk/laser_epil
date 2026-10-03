@@ -1,0 +1,109 @@
+@import "tailwindcss";
+
+@theme {
+  /* Premium nude palette — shared by the website AND the admin panel. */
+  --color-ivory: #fdfbf8;
+  --color-cream: #f7f1ea;
+  --color-nude: #efe4d8;
+  --color-sand: #dfcbb6;
+  --color-cocoa: #2e2420;
+  --color-cocoa-2: #4a3c35;
+  --color-taupe: #7a6a60;
+  --color-gold: #b8955a;
+  --color-gold-light: #dcc592;
+  --color-gold-dark: #8a6a32;
+
+  /* Latin/Cyrillic glyphs come from the first font, Georgian glyphs fall through to Noto Georgian. */
+  --font-display: var(--font-display-latin), var(--font-display-ka), "Times New Roman", serif;
+  --font-sans: var(--font-sans-latin), var(--font-sans-ka), ui-sans-serif, system-ui, sans-serif;
+
+  --ease-lux: cubic-bezier(0.22, 1, 0.36, 1);
+  --shadow-soft: 0 30px 60px -30px rgb(46 36 32 / 0.25);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    @apply bg-ivory text-cocoa font-sans antialiased;
+  }
+  ::selection {
+    background: var(--color-nude);
+    color: var(--color-cocoa);
+  }
+  :focus-visible {
+    outline: 1px solid var(--color-gold-dark);
+    outline-offset: 3px;
+  }
+  :lang(ka) .font-display {
+    letter-spacing: -0.01em;
+    font-weight: 400;
+  }
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    opacity: 0.55;
+  }
+}
+
+@utility eyebrow {
+  @apply inline-flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.3em] text-gold-dark;
+  &::before {
+    content: "";
+    @apply block h-px w-8 bg-gold;
+  }
+}
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-[12px] font-semibold uppercase tracking-[0.18em] transition-all duration-500 ease-lux disabled:cursor-not-allowed disabled:opacity-60;
+}
+@utility btn-primary {
+  @apply btn bg-cocoa text-ivory hover:bg-gold-dark;
+}
+@utility btn-gold {
+  @apply btn bg-gold text-cocoa hover:bg-gold-light;
+}
+@utility btn-outline {
+  @apply btn border border-cocoa/20 text-cocoa hover:border-gold hover:text-gold-dark;
+}
+@utility btn-light {
+  @apply btn border border-white/60 text-white hover:bg-white hover:text-cocoa;
+}
+@utility field {
+  @apply w-full rounded-none border-0 border-b border-cocoa/15 bg-transparent px-0 py-3 text-[15px] text-cocoa placeholder:text-cocoa/30 transition-colors focus:border-gold-dark focus:outline-none;
+}
+@utility field-label {
+  @apply mb-1 block text-[10px] font-semibold uppercase tracking-[0.22em] text-taupe;
+}
+@utility grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+}
+
+@keyframes kenburns {
+  from { transform: scale(1.1); }
+  to { transform: scale(1); }
+}
+
+@keyframes floaty {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Unlayered so it overrides tracking utilities. Wide tracking hurts Georgian legibility. */
+html:lang(ka) [class*="tracking-["],
+html:lang(ka) .eyebrow,
+html:lang(ka) .btn,
+html:lang(ka) .btn-primary,
+html:lang(ka) .btn-gold,
+html:lang(ka) .btn-outline,
+html:lang(ka) .btn-light {
+  letter-spacing: 0.04em;
+}

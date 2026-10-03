@@ -1,0 +1,101 @@
+{
+  "nav": {
+    "home": "Home",
+    "services": "Services",
+    "prices": "Prices",
+    "about": "About",
+    "results": "Results",
+    "reviews": "Reviews",
+    "faq": "FAQ",
+    "contact": "Contact",
+    "menu": "Menu",
+    "close": "Close",
+    "language": "Language"
+  },
+  "actions": {
+    "book": "Book Appointment",
+    "bookShort": "Book now",
+    "whatsapp": "Contact WhatsApp",
+    "writeWhatsapp": "Write on WhatsApp",
+    "call": "Call",
+    "viewPrices": "View all prices",
+    "scroll": "Scroll"
+  },
+  "service": {
+    "minutes": "{count} min",
+    "duration": "Duration",
+    "price": "Price",
+    "all": "All",
+    "WOMEN": "For women",
+    "MEN": "For men",
+    "book": "Book"
+  },
+  "prices": {
+    "service": "Service",
+    "price": "Price",
+    "duration": "Duration",
+    "empty": "The price list will appear soon."
+  },
+  "booking": {
+    "title": "Book an appointment",
+    "subtitle": "Leave your details — we will call you back to confirm the time.",
+    "fullName": "Name",
+    "phone": "Phone",
+    "service": "Service",
+    "chooseService": "Choose a service",
+    "date": "Preferred date",
+    "time": "Preferred time",
+    "chooseTime": "Choose time",
+    "message": "Message",
+    "messagePlaceholder": "Questions, wishes or a convenient time to call…",
+    "submit": "Send Request",
+    "sending": "Sending…",
+    "thanksTitle": "Request sent",
+    "thanks": "Thank you! We will contact you soon.",
+    "done": "Close",
+    "privacy": "By sending the request you agree that we may contact you about your appointment."
+  },
+  "errors": {
+    "nameRequired": "Please enter your name",
+    "phoneInvalid": "Please enter a valid phone number",
+    "serviceRequired": "Please choose a service",
+    "dateRequired": "Please choose a date",
+    "dateInPast": "The date cannot be in the past",
+    "dateTooFar": "Please choose a date within the next year",
+    "timeRequired": "Please choose a time",
+    "tooLong": "Too long",
+    "captcha": "Please confirm you are not a robot",
+    "rateLimited": "Too many requests. Please try again in a few minutes.",
+    "server": "Something went wrong. Please call us or try again.",
+    "generic": "Please check this field"
+  },
+  "contact": {
+    "phone": "Phone",
+    "whatsapp": "WhatsApp",
+    "email": "Email",
+    "address": "Address",
+    "hours": "Working hours",
+    "follow": "Follow us",
+    "instagram": "Instagram",
+    "route": "Get directions"
+  },
+  "results": {
+    "before": "Before",
+    "after": "After",
+    "drag": "Drag to compare"
+  },
+  "reviews": {
+    "rating": "Rated {rating} out of 5",
+    "prev": "Previous review",
+    "next": "Next review"
+  },
+  "footer": {
+    "navigation": "Navigation",
+    "contacts": "Contacts"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "text": "The page you are looking for does not exist or has been moved.",
+    "back": "Back to home"
+  }
+}

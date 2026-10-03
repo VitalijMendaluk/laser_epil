@@ -1,0 +1,138 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ServiceCategory {
+  WOMEN
+  MEN
+}
+
+enum BookingStatus {
+  NEW
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+}
+
+model Admin {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+/// A laser procedure (e.g. "Full legs"). Name/description in ka/uk/en.
+model Service {
+  id            String          @id @default(cuid())
+  slug          String          @unique
+  nameKa        String
+  nameUk        String
+  nameEn        String
+  descriptionKa String          @default("")
+  descriptionUk String          @default("")
+  descriptionEn String          @default("")
+  category      ServiceCategory @default(WOMEN)
+  price         Int
+  durationMin   Int
+  image         String          @default("")
+  isVisible     Boolean         @default(true)
+  sortOrder     Int             @default(0)
+  bookings      Booking[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  @@index([isVisible, sortOrder])
+}
+
+model Booking {
+  id          String        @id @default(cuid())
+  fullName    String
+  phone       String
+  serviceId   String?
+  service     Service?      @relation(fields: [serviceId], references: [id], onDelete: SetNull)
+  /// Snapshot of the service name at booking time (kept if the service is deleted).
+  serviceName String
+  date        DateTime      @db.Date
+  time        String
+  message     String?
+  locale      String        @default("ka")
+  status      BookingStatus @default(NEW)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([status, createdAt])
+  @@index([serviceName])
+}
+
+model Testimonial {
+  id        String   @id @default(cuid())
+  name      String
+  photo     String   @default("")
+  textKa    String   @default("")
+  textUk    String   @default("")
+  textEn    String   @default("")
+  rating    Int      @default(5)
+  isVisible Boolean  @default(true)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model BeforeAfter {
+  id          String   @id @default(cuid())
+  beforeImage String
+  afterImage  String
+  captionKa   String   @default("")
+  captionUk   String   @default("")
+  captionEn   String   @default("")
+  isVisible   Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model FaqItem {
+  id         String   @id @default(cuid())
+  questionKa String
+  questionUk String
+  questionEn String
+  answerKa   String
+  answerUk   String
+  answerEn   String
+  isVisible  Boolean  @default(true)
+  sortOrder  Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+/// Trilingual CMS text, addressed by a stable key (e.g. "hero.title").
+model SiteText {
+  key       String   @id
+  ka        String
+  uk        String
+  en        String
+  updatedAt DateTime @updatedAt
+}
+
+/// Non-translatable settings: contacts, social links, images, map embed, tracking IDs.
+model Setting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
+/// Uploaded image stored in the database (used when Cloudinary is not configured).
+model StoredImage {
+  id        String   @id @default(cuid())
+  mime      String
+  data      Bytes
+  size      Int
+  createdAt DateTime @default(now())
+}
