@@ -3,23 +3,24 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
+import { CATEGORIES, type Category } from "@/lib/categories";
 import type { LocalizedService } from "@/lib/content";
 import { cn } from "@/lib/utils";
 import { ServiceCard } from "./ServiceCard";
 
-type Filter = "ALL" | "WOMEN" | "MEN";
+type Filter = "ALL" | Category;
 
 export function ServicesGrid({ services }: { services: LocalizedService[] }) {
   const t = useTranslations("service");
   const [filter, setFilter] = useState<Filter>("ALL");
-  const hasBoth = services.some((s) => s.category === "WOMEN") && services.some((s) => s.category === "MEN");
+  const present = CATEGORIES.filter((c) => services.some((s) => s.category === c));
   const visible = useMemo(() => (filter === "ALL" ? services : services.filter((s) => s.category === filter)), [services, filter]);
 
   return (
     <div>
-      {hasBoth && (
+      {present.length > 1 && (
         <div className="mt-10 flex flex-wrap gap-2" role="group">
-          {(["ALL", "WOMEN", "MEN"] as const).map((f) => (
+          {(["ALL", ...present] as const).map((f) => (
             <button
               key={f}
               type="button"

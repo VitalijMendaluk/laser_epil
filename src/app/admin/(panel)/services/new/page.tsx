@@ -17,7 +17,7 @@ export default async function NewServicePage() {
       <ServiceForm
         action={createServiceAction}
         submitLabel="Create service"
-        initial={{ nameKa: "", nameUk: "", nameEn: "", descriptionKa: "", descriptionUk: "", descriptionEn: "", category: "WOMEN", price: "", durationMin: 30, image: "", isVisible: true, sortOrder: 0 }}
+        initial={{ nameKa: "", nameRu: "", nameEn: "", descriptionKa: "", descriptionRu: "", descriptionEn: "", category: "HAIR", price: "", durationMin: 30, image: "", isVisible: true, sortOrder: 0 }}
       />
     </>
   );

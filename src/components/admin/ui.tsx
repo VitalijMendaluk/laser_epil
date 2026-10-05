@@ -84,13 +84,13 @@ export function PageHeader({ title, description, actions }: { title: string; des
 
 export const LANGS = [
   { code: "ka", label: "ქართული", flag: "🇬🇪" },
-  { code: "uk", label: "Українська", flag: "🇺🇦" },
+  { code: "ru", label: "Русский", flag: "🇷🇺" },
   { code: "en", label: "English", flag: "🇬🇧" },
 ] as const;
 
-const SUFFIX = { ka: "Ka", uk: "Uk", en: "En" } as const;
+const SUFFIX = { ka: "Ka", ru: "Ru", en: "En" } as const;
 
-/** Three inputs (ka / uk / en) for a translated field, named `${base}Ka`, `${base}Uk`, `${base}En`. */
+/** Three inputs (ka / ru / en) for a translated field, named `${base}Ka`, `${base}Ru`, `${base}En`. */
 export function LangFields({
   base,
   label,

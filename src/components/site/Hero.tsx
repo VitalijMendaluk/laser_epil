@@ -49,7 +49,7 @@ export function Hero({ eyebrow, title, subtitle, features, badgeValue, badgeLabe
             {words.map((word, i) => (
               <span key={`${word}-${i}`} className="inline-block overflow-hidden pb-[0.1em] align-bottom">
                 <motion.span
-                  className={cn("inline-block", i === words.length - 1 && "italic text-gold-dark")}
+                  className={cn("inline-block", i === words.length - 1 && "pr-[0.15em] italic text-gold-dark")}
                   initial={{ y: "110%" }}
                   animate={{ y: 0 }}
                   transition={{ duration: 1.1, delay: 0.35 + i * 0.08, ease }}

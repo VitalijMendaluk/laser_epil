@@ -61,7 +61,7 @@ export const Turnstile = forwardRef<TurnstileHandle, { siteKey: string; locale: 
         widgetId.current = window.turnstile.render(el.current, {
           sitekey: siteKey,
           theme: "light",
-          language: locale === "uk" ? "uk" : locale === "ka" ? "ka" : "en",
+          language: locale === "ru" ? "ru" : locale === "ka" ? "ka" : "en",
           callback: (token: string) => cb.current(token),
           "expired-callback": () => cb.current(""),
           "error-callback": () => cb.current(""),

@@ -6,10 +6,10 @@ import { useFormAction } from "./useFormAction";
 
 export type FaqFormValues = {
   questionKa: string;
-  questionUk: string;
+  questionRu: string;
   questionEn: string;
   answerKa: string;
-  answerUk: string;
+  answerRu: string;
   answerEn: string;
   isVisible: boolean;
   sortOrder: number;

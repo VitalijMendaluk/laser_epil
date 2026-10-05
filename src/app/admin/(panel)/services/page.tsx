@@ -6,6 +6,7 @@ import { PriceInlineForm } from "@/components/admin/PriceInlineForm";
 import { EmptyState, HiddenBadge, RowActions, SavedNotice } from "@/components/admin/RowActions";
 import { PageHeader } from "@/components/admin/ui";
 import { requireAdmin } from "@/lib/auth";
+import { CATEGORY_LABELS } from "@/lib/categories";
 import { getSiteContent } from "@/lib/content";
 import { prisma } from "@/lib/prisma";
 import { cn } from "@/lib/utils";
@@ -48,10 +49,10 @@ export default async function ServicesAdminPage({ searchParams }: { searchParams
                 <div className="flex flex-wrap items-center gap-2">
                   <Link href={`/admin/services/${s.id}`} className="truncate font-medium hover:text-gold-dark">{s.nameEn}</Link>
                   {!s.isVisible && <HiddenBadge />}
-                  <span className="rounded-full bg-nude px-2 py-0.5 text-[10px] uppercase tracking-wider text-cocoa/70">{s.category === "MEN" ? "Men" : "Women"}</span>
+                  <span className="rounded-full bg-nude px-2 py-0.5 text-[10px] uppercase tracking-wider text-cocoa/70">{CATEGORY_LABELS[s.category]}</span>
                 </div>
                 <p className="truncate text-sm text-cocoa/60">
-                  <span lang="ka">{s.nameKa}</span> · {s.nameUk}
+                  <span lang="ka">{s.nameKa}</span> · {s.nameRu}
                 </p>
                 <p className="mt-1 flex items-center gap-1 text-xs text-cocoa/55">
                   <Clock size={12} /> {s.durationMin} min · {s._count.bookings} bookings

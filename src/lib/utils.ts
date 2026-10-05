@@ -21,7 +21,7 @@ export function slugify(input: string) {
 }
 
 /** Images must come from a trusted origin so next/image can optimise them. */
-const IMAGE_PREFIXES = ["/media/", "/uploads/", "https://res.cloudinary.com/", "https://images.unsplash.com/"];
+const IMAGE_PREFIXES = ["/images/", "/media/", "/uploads/", "https://res.cloudinary.com/", "https://images.unsplash.com/"];
 
 export function isAllowedImageUrl(url: string) {
   return IMAGE_PREFIXES.some((p) => url.startsWith(p)) && !url.includes("..");

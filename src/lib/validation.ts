@@ -25,7 +25,7 @@ export const bookingSchema = z.object({
     .refine((d) => d <= new Date(Date.now() + 366 * 86_400_000).toISOString().slice(0, 10), "dateTooFar"),
   time: z.string().trim().regex(/^([01]\d|2[0-3]):[0-5]\d$/, "timeRequired"),
   message: z.string().trim().max(1000, "tooLong").optional(),
-  locale: z.enum(["ka", "uk", "en"]).default("ka"),
+  locale: z.enum(["ka", "ru", "en"]).default("ka"),
   /** Honeypot: real users never fill this hidden field. */
   website: z.string().max(0).optional(),
   /** Cloudflare Turnstile token (verified on the server when configured). */
@@ -47,12 +47,12 @@ const sortOrder = z.coerce.number().int().min(0).max(10_000).default(0);
 
 export const serviceSchema = z.object({
   nameKa: required(100),
-  nameUk: required(100),
+  nameRu: required(100),
   nameEn: required(100),
   descriptionKa: text(2000).default(""),
-  descriptionUk: text(2000).default(""),
+  descriptionRu: text(2000).default(""),
   descriptionEn: text(2000).default(""),
-  category: z.enum(["WOMEN", "MEN"]),
+  category: z.enum(["HAIR", "NAILS", "MAKEUP", "BROWS_LASHES", "CARE"]),
   price: z.coerce.number().int("Whole number").min(0, "Must be ≥ 0").max(100_000),
   durationMin: z.coerce.number().int("Whole number").min(5, "At least 5 min").max(600, "Maximum 600 min"),
   image: optionalImage,
@@ -65,19 +65,19 @@ export const testimonialSchema = z
     name: required(80),
     photo: optionalImage,
     textKa: text(1500),
-    textUk: text(1500),
+    textRu: text(1500),
     textEn: text(1500),
     rating: z.coerce.number().int().min(1).max(5),
     isVisible: z.boolean(),
     sortOrder,
   })
-  .refine((d) => d.textKa || d.textUk || d.textEn, { path: ["textKa"], message: "Write the review in at least one language" });
+  .refine((d) => d.textKa || d.textRu || d.textEn, { path: ["textKa"], message: "Write the review in at least one language" });
 
 export const beforeAfterSchema = z.object({
-  beforeImage: imageUrl,
+  beforeImage: optionalImage,
   afterImage: imageUrl,
   captionKa: text(200),
-  captionUk: text(200),
+  captionRu: text(200),
   captionEn: text(200),
   isVisible: z.boolean(),
   sortOrder,
@@ -85,10 +85,10 @@ export const beforeAfterSchema = z.object({
 
 export const faqSchema = z.object({
   questionKa: required(300),
-  questionUk: required(300),
+  questionRu: required(300),
   questionEn: required(300),
   answerKa: required(3000),
-  answerUk: required(3000),
+  answerRu: required(3000),
   answerEn: required(3000),
   isVisible: z.boolean(),
   sortOrder,

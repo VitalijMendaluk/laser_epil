@@ -9,7 +9,7 @@ import { beforeAfterSchema, fieldErrors } from "@/lib/validation";
 import { FIX_FIELDS, readForm } from "./_helpers";
 import type { ActionState } from "./types";
 
-const KEYS = ["beforeImage", "afterImage", "captionKa", "captionUk", "captionEn", "sortOrder"];
+const KEYS = ["beforeImage", "afterImage", "captionKa", "captionRu", "captionEn", "sortOrder"];
 
 function parse(formData: FormData) {
   const raw = readForm(formData, KEYS, ["isVisible"]);

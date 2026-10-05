@@ -3,15 +3,23 @@ import bcrypt from "bcryptjs";
 import { SETTING_FIELDS, TEXT_FIELDS } from "../src/lib/content-schema";
 
 const prisma = new PrismaClient();
-const img = (id: string, w = 1200) => `https://images.unsplash.com/photo-${id}?w=${w}&q=80`;
+const unsplash = (id: string, w = 1200) => `https://images.unsplash.com/photo-${id}?w=${w}&q=80`;
+const own = (name: string) => `/images/vizuali/${name}.jpg`;
+
+/**
+ * Bump this when the demo content is rewritten. On the next deploy the seed replaces
+ * texts, settings (except tracking IDs), services, reviews, portfolio and FAQ ONCE;
+ * after that it never overwrites admin edits again. Bookings and admins are kept.
+ */
+const CONTENT_VERSION = "vizuali-1";
 
 type SeedService = {
   slug: string;
   nameKa: string;
-  nameUk: string;
+  nameRu: string;
   nameEn: string;
   descriptionKa: string;
-  descriptionUk: string;
+  descriptionRu: string;
   descriptionEn: string;
   category: ServiceCategory;
   price: number;
@@ -20,137 +28,145 @@ type SeedService = {
 };
 
 const services: SeedService[] = [
-  {
-    slug: "full-legs",
-    nameKa: "ფეხების სრული ეპილაცია", nameUk: "Лазерна епіляція ніг", nameEn: "Full legs",
-    descriptionKa: "ფეხების მთლიანი ზონა — ტერფიდან ბარძაყამდე. გლუვი კანი მთელი სეზონის განმავლობაში.",
-    descriptionUk: "Повністю ноги — від стоп до стегон. Гладенька шкіра на весь сезон.",
-    descriptionEn: "The whole leg — from feet to upper thighs. Smooth skin all season long.",
-    category: "WOMEN", price: 120, durationMin: 60, image: img("1587179790059-5f5d937fb87d"),
-  },
-  {
-    slug: "bikini",
-    nameKa: "ბიკინის ზონა", nameUk: "Бікіні зона", nameEn: "Bikini line",
-    descriptionKa: "კლასიკური ბიკინი — ზონა საცურაო კოსტიუმის ხაზის გასწვრივ.",
-    descriptionUk: "Класичне бікіні — зона по лінії купальника.",
-    descriptionEn: "Classic bikini — the area along the swimsuit line.",
-    category: "WOMEN", price: 60, durationMin: 20, image: img("1606792109910-340f5e672ccd"),
-  },
-  {
-    slug: "deep-bikini",
-    nameKa: "ღრმა ბიკინი", nameUk: "Глибоке бікіні", nameEn: "Deep bikini",
-    descriptionKa: "სრული ინტიმური ზონა. დელიკატურად, კომფორტულად და სრული კონფიდენციალურობით.",
-    descriptionUk: "Повна інтимна зона. Делікатно, комфортно та з повною конфіденційністю.",
-    descriptionEn: "The full intimate area. Delicate, comfortable and completely discreet.",
-    category: "WOMEN", price: 90, durationMin: 30, image: img("1714682597753-a646ba506cee"),
-  },
-  {
-    slug: "underarms",
-    nameKa: "იღლიები", nameUk: "Пахви", nameEn: "Underarms",
-    descriptionKa: "ერთ-ერთი ყველაზე სწრაფი და პოპულარული ზონა — შედეგი შესამჩნევია პირველივე პროცედურიდან.",
-    descriptionUk: "Одна з найшвидших і найпопулярніших зон — результат помітний після першої процедури.",
-    descriptionEn: "One of the quickest and most popular areas — results are visible after the very first session.",
-    category: "WOMEN", price: 40, durationMin: 15, image: img("1567013514336-6de53c9e7e63"),
-  },
-  {
-    slug: "arms",
-    nameKa: "ხელები", nameUk: "Руки", nameEn: "Arms",
-    descriptionKa: "ხელები მთლიანად ან იდაყვამდე — გლუვი და მოვლილი კანი.",
-    descriptionUk: "Руки повністю або до ліктя — гладенька та доглянута шкіра.",
-    descriptionEn: "Full arms or forearms — smooth, well-groomed skin.",
-    category: "WOMEN", price: 70, durationMin: 30, image: img("1598300195951-8667fec6f769"),
-  },
-  {
-    slug: "face",
-    nameKa: "სახე", nameUk: "Обличчя", nameEn: "Face",
-    descriptionKa: "ზედა ტუჩი, ნიკაპი ან სახის სრული ზონა. ნაზი პარამეტრები მგრძნობიარე კანისთვის.",
-    descriptionUk: "Верхня губа, підборіддя або все обличчя. Делікатні налаштування для чутливої шкіри.",
-    descriptionEn: "Upper lip, chin or the full face. Gentle settings for sensitive skin.",
-    category: "WOMEN", price: 50, durationMin: 20, image: img("1785861775561-c6db7da314a0"),
-  },
-  {
-    slug: "lower-legs",
-    nameKa: "წვივები", nameUk: "Гомілки", nameEn: "Lower legs",
-    descriptionKa: "ზონა მუხლიდან ტერფამდე — იდეალური არჩევანი პირველი კურსისთვის.",
-    descriptionUk: "Зона від коліна до стопи — ідеальний вибір для першого курсу.",
-    descriptionEn: "From knee to ankle — a perfect choice for your first course.",
-    category: "WOMEN", price: 70, durationMin: 30, image: img("1626623936480-15fd56a295f8"),
-  },
-  {
-    slug: "full-body",
-    nameKa: "სრული სხეული — კომპლექსი", nameUk: "Все тіло — комплекс", nameEn: "Full body package",
-    descriptionKa: "ფეხები, ღრმა ბიკინი, იღლიები და ხელები ერთ ვიზიტში — ყველაზე მომგებიანი ფასით.",
-    descriptionUk: "Ноги, глибоке бікіні, пахви та руки за один візит — за найвигіднішою ціною.",
-    descriptionEn: "Legs, deep bikini, underarms and arms in one visit — at the best price.",
-    category: "WOMEN", price: 250, durationMin: 120, image: img("1700760933574-9f0f4ea9aa3b"),
-  },
-  {
-    slug: "men",
-    nameKa: "მამაკაცის ეპილაცია", nameUk: "Чоловіча епіляція", nameEn: "Men's laser hair removal",
-    descriptionKa: "ზურგი, მკერდი, მხრები ან კისერი. სპეციალური პარამეტრები უხეში თმისთვის.",
-    descriptionUk: "Спина, груди, плечі або шия. Спеціальні налаштування для жорсткого волосся.",
-    descriptionEn: "Back, chest, shoulders or neck. Special settings for coarse hair.",
-    category: "MEN", price: 150, durationMin: 60, image: img("1657800187914-682b18440d50"),
-  },
+  // Hair
+  { slug: "haircut", category: "HAIR", price: 35, durationMin: 60, image: own("bob-color"),
+    nameKa: "ქალის შეჭრა", nameRu: "Женская стрижка", nameEn: "Women's haircut",
+    descriptionKa: "შეჭრა დაბანით და სტაილინგით — ფორმას ვარჩევთ სახის ტიპისა და თმის სტრუქტურის მიხედვით.",
+    descriptionRu: "Стрижка с мытьём и укладкой — форму подбираем под тип лица и структуру волос.",
+    descriptionEn: "Haircut with wash and styling — the shape is tailored to your face and hair type." },
+  { slug: "hair-colouring", category: "HAIR", price: 90, durationMin: 120, image: unsplash("1707979577466-2d6109c68a45"),
+    nameKa: "თმის შეღებვა", nameRu: "Окрашивание волос", nameEn: "Hair colouring",
+    descriptionKa: "ერთტონიანი შეღებვა პროფესიონალური საღებავებით, ფესვების ან მთელი სიგრძის.",
+    descriptionRu: "Окрашивание в один тон профессиональными красителями — корни или вся длина.",
+    descriptionEn: "Single-tone colouring with professional dyes — roots or full length." },
+  { slug: "balayage", category: "HAIR", price: 220, durationMin: 210, image: own("balayage"),
+    nameKa: "ბალაიაჟი / აირთაჩი", nameRu: "Балаяж / Airtouch", nameEn: "Balayage / Airtouch",
+    descriptionKa: "რთული შეღებვა ბუნებრივი ნათელი გადასვლებით — თმა ცოცხალი და მოცულობითი ჩანს.",
+    descriptionRu: "Сложное окрашивание с естественными светлыми переходами — волосы выглядят живыми и объёмными.",
+    descriptionEn: "Advanced colouring with soft, natural blonde transitions for lively, voluminous hair." },
+  { slug: "blow-dry", category: "HAIR", price: 30, durationMin: 45, image: unsplash("1580618672591-eb180b1a973f"),
+    nameKa: "დაბანა და სტაილინგი", nameRu: "Укладка", nameEn: "Wash & blow-dry",
+    descriptionKa: "დაბანა, მოვლა და სტაილინგი — მოცულობითი ან გლუვი, თქვენი სურვილისამებრ.",
+    descriptionRu: "Мытьё, уход и укладка — объёмная или гладкая, как вам нравится.",
+    descriptionEn: "Wash, care and styling — voluminous or sleek, just as you like." },
+  { slug: "evening-hairstyle", category: "HAIR", price: 70, durationMin: 60, image: own("updo"),
+    nameKa: "საღამოს ვარცხნილობა", nameRu: "Вечерняя причёска", nameEn: "Evening hairstyle",
+    descriptionKa: "კონები, ნაწნავები და დახვეული თმა ღონისძიებებისა და ფოტოსესიებისთვის.",
+    descriptionRu: "Пучки, косы и локоны для торжеств и фотосессий.",
+    descriptionEn: "Updos, braids and curls for celebrations and photo shoots." },
+  { slug: "keratin", category: "HAIR", price: 150, durationMin: 150, image: own("blonde-long"),
+    nameKa: "კერატინით გასწორება", nameRu: "Кератиновое выпрямление", nameEn: "Keratin treatment",
+    descriptionKa: "გლუვი, ბზინვარე და მორჩილი თმა რამდენიმე თვის განმავლობაში.",
+    descriptionRu: "Гладкие, блестящие и послушные волосы на несколько месяцев.",
+    descriptionEn: "Smooth, glossy, manageable hair for several months." },
+  // Nails
+  { slug: "gel-manicure", category: "NAILS", price: 40, durationMin: 75, image: own("nails-green"),
+    nameKa: "მანიკური გელ-ლაქით", nameRu: "Маникюр с гель-лаком", nameEn: "Gel manicure",
+    descriptionKa: "აპარატული მანიკური, ფრჩხილის ფორმა და გელ-ლაქი — 3 კვირამდე მდგრადობით.",
+    descriptionRu: "Аппаратный маникюр, форма и покрытие гель-лаком — носится до 3 недель.",
+    descriptionEn: "Hardware manicure, shaping and gel polish that lasts up to 3 weeks." },
+  { slug: "nail-extensions", category: "NAILS", price: 70, durationMin: 120, image: own("nails-pink"),
+    nameKa: "ფრჩხილების დაგრძელება", nameRu: "Наращивание ногтей", nameEn: "Nail extensions",
+    descriptionKa: "დაგრძელება გელით ნებისმიერი ფორმითა და დიზაინით.",
+    descriptionRu: "Наращивание гелем любой формы и с любым дизайном.",
+    descriptionEn: "Gel extensions in any shape, with the design of your choice." },
+  { slug: "gel-pedicure", category: "NAILS", price: 55, durationMin: 90, image: unsplash("1787651344170-c2f81514934d"),
+    nameKa: "პედიკური გელ-ლაქით", nameRu: "Педикюр с гель-лаком", nameEn: "Gel pedicure",
+    descriptionKa: "ტერფებისა და ფრჩხილების სრული მოვლა გელ-ლაქით.",
+    descriptionRu: "Полный уход за стопами и ногтями с покрытием гель-лаком.",
+    descriptionEn: "Complete foot and nail care finished with gel polish." },
+  // Makeup
+  { slug: "evening-makeup", category: "MAKEUP", price: 70, durationMin: 60, image: own("makeup-mirror"),
+    nameKa: "საღამოს მაკიაჟი", nameRu: "Вечерний макияж", nameEn: "Evening makeup",
+    descriptionKa: "მდგრადი მაკიაჟი ღონისძიებისთვის, ფოტოსესიისა თუ განსაკუთრებული საღამოსთვის.",
+    descriptionRu: "Стойкий макияж для праздника, фотосессии или особенного вечера.",
+    descriptionEn: "Long-lasting makeup for a party, photo shoot or special evening." },
+  { slug: "bridal-look", category: "MAKEUP", price: 250, durationMin: 180, image: own("bride"),
+    nameKa: "საქორწილო იმიჯი", nameRu: "Свадебный образ", nameEn: "Bridal look",
+    descriptionKa: "საქორწილო მაკიაჟი და ვარცხნილობა საცდელი ვიზიტით — თქვენი დღე იდეალური უნდა იყოს.",
+    descriptionRu: "Свадебный макияж и причёска с пробным визитом — ваш день должен быть идеальным.",
+    descriptionEn: "Bridal makeup and hairstyle with a trial session — your day deserves perfection." },
+  // Brows & lashes
+  { slug: "brows", category: "BROWS_LASHES", price: 30, durationMin: 45, image: unsplash("1709477542149-f4e0e21d590b"),
+    nameKa: "წარბების კორექცია და შეღებვა", nameRu: "Коррекция и окрашивание бровей", nameEn: "Brow shaping & tint",
+    descriptionKa: "წარბების ფორმა თანამედროვე ტექნიკით და შეღებვა საღებავით ან ჰენით.",
+    descriptionRu: "Форма бровей по современным техникам и окрашивание краской или хной.",
+    descriptionEn: "Modern brow shaping plus tint or henna." },
+  { slug: "lash-lift", category: "BROWS_LASHES", price: 60, durationMin: 60, image: unsplash("1718720410649-7524fcb0f0a5"),
+    nameKa: "წამწამების ლამინირება", nameRu: "Ламинирование ресниц", nameEn: "Lash lift",
+    descriptionKa: "ბუნებრივი წამწამების აწევა და შეღებვა — ღია მზერა 6–8 კვირით.",
+    descriptionRu: "Подъём и окрашивание натуральных ресниц — открытый взгляд на 6–8 недель.",
+    descriptionEn: "Lift and tint of your natural lashes — an open look for 6–8 weeks." },
+  { slug: "lash-extensions", category: "BROWS_LASHES", price: 80, durationMin: 120, image: unsplash("1589710751893-f9a6770ad71b"),
+    nameKa: "წამწამების დაგრძელება", nameRu: "Наращивание ресниц", nameEn: "Lash extensions",
+    descriptionKa: "კლასიკური ან მოცულობითი დაგრძელება — ეფექტს ერთად ვარჩევთ.",
+    descriptionRu: "Классическое или объёмное наращивание — эффект подбираем вместе.",
+    descriptionEn: "Classic or volume extensions — we choose the effect together." },
+  // Skin & body care
+  { slug: "facial-cleansing", category: "CARE", price: 80, durationMin: 75, image: unsplash("1570172619644-dfd03ed5d881"),
+    nameKa: "სახის წმენდა", nameRu: "Чистка лица", nameEn: "Facial cleansing",
+    descriptionKa: "სახის ღრმა წმენდა, ნიღაბი და მოვლა თქვენი კანის ტიპის მიხედვით.",
+    descriptionRu: "Глубокое очищение, маска и уход по вашему типу кожи.",
+    descriptionEn: "Deep cleansing, mask and care tailored to your skin type." },
+  { slug: "relax-massage", category: "CARE", price: 70, durationMin: 60, image: unsplash("1639162906614-0603b0ae95fd"),
+    nameKa: "რელაქს-მასაჟი", nameRu: "Релакс-массаж", nameEn: "Relaxing massage",
+    descriptionKa: "მასაჟი, რომელიც ხსნის დაძაბულობას და აღადგენს ენერგიას.",
+    descriptionRu: "Массаж, который снимает напряжение и возвращает энергию.",
+    descriptionEn: "A massage that melts away tension and restores your energy." },
 ];
 
+/** Real Google Maps reviews of the salon (translated). */
 const testimonials = [
-  {
-    name: "Nino K.", photo: img("1544005313-94ddf0286df2", 300), rating: 5,
-    textKa: "ძალიან კმაყოფილი ვარ! 4 პროცედურის შემდეგ თმა თითქმის აღარ მაქვს. სტუდია სუფთა და მყუდროა, სპეციალისტი ყველაფერს დეტალურად ხსნის.",
-    textUk: "Дуже задоволена! Після 4 процедур волосся майже не залишилося. У студії чисто й затишно, майстриня все детально пояснює.",
-    textEn: "Absolutely delighted! After 4 sessions there's almost no hair left. The studio is spotless and cosy, and the specialist explains everything in detail.",
-  },
-  {
-    name: "Olena M.", photo: img("1524550158212-33f2ff985344", 300), rating: 5,
-    textKa: "ვეძებდი სტუდიას, სადაც ინგლისურად ან უკრაინულად ილაპარაკებენ — აქ ყველაფერი მარტივი იყო. პროცედურა თითქმის უმტკივნეულოა.",
-    textUk: "Шукала студію, де можна спілкуватися українською чи англійською — тут усе було просто. Процедура майже безболісна, результат чудовий.",
-    textEn: "I was looking for a studio where I could speak Ukrainian or English — everything was easy here. Almost painless, and the results are great.",
-  },
-  {
-    name: "Mariam G.", photo: img("1604072366595-e75dc92d6bdc", 300), rating: 5,
-    textKa: "საუკეთესო გადაწყვეტილება ზაფხულის წინ. ფასები გამჭვირვალეა, ჩაწერა — ძალიან მოსახერხებელი WhatsApp-ით.",
-    textUk: "Найкраще рішення перед літом. Прозорі ціни, а записуватися через WhatsApp дуже зручно.",
-    textEn: "The best decision before summer. Transparent prices and booking via WhatsApp is super convenient.",
-  },
-  {
-    name: "Giorgi T.", photo: "", rating: 5,
-    textKa: "ზურგის ეპილაცია გავიკეთე — პროფესიონალური მიდგომა და კომფორტული ატმოსფერო. გირჩევთ!",
-    textUk: "Робив епіляцію спини — професійний підхід і комфортна атмосфера. Рекомендую!",
-    textEn: "Had my back done — a professional approach and a comfortable atmosphere. Highly recommend!",
-  },
+  { name: "Gurami E.", photo: "", rating: 5,
+    textKa: "წლებია დავდივარ ვიზუალში და დარწმუნებით შემიძლია ვთქვა, რომ ეს ქალაქის ერთ-ერთი საუკეთესო სილამაზის სალონია. ყველაზე მეტად მომწონს, რომ სალონი არასდროს რჩება უცვლელი.",
+    textRu: "Я уже много лет хожу в Vizuali и могу уверенно сказать, что это один из лучших салонов красоты в городе. Больше всего мне нравится, что салон никогда не стоит на месте.",
+    textEn: "I've been coming to Vizuali in Kutaisi for years, and I can confidently say it's one of the best beauty salons in the city. What I love most is that the salon never stays the same." },
+  { name: "A. J.", photo: "", rating: 5,
+    textKa: "პროფესიონალური თმის შეღებვა, გირჩევთ!", textRu: "Профессиональное окрашивание волос, очень рекомендую!", textEn: "Professional hair colouring, highly recommend." },
+  { name: "Anna O.", photo: "", rating: 5,
+    textKa: "მაღალი სტანდარტები, ძალიან პროფესიონალურად.", textRu: "Высокие стандарты, очень профессионально.", textEn: "High standards, very professional." },
+  { name: "Viki Ts.", photo: "", rating: 5, textKa: "საუკეთესოა!", textRu: "Лучшие!", textEn: "The best!" },
 ];
 
 const results = [
-  { beforeImage: img("1710580889701-9fa8f2cd5927", 900), afterImage: img("1626623936480-15fd56a295f8", 900), captionKa: "წვივები — 5 პროცედურის შემდეგ", captionUk: "Гомілки — після 5 процедур", captionEn: "Lower legs — after 5 sessions" },
-  { beforeImage: img("1769029270634-693d635260ef", 900), afterImage: img("1587179790059-5f5d937fb87d", 900), captionKa: "ფეხები — 6 პროცედურის შემდეგ", captionUk: "Ноги — після 6 процедур", captionEn: "Legs — after 6 sessions" },
-  { beforeImage: img("1605552986371-d78779ebe38b", 900), afterImage: img("1599817878414-43ef36677cf0", 900), captionKa: "იღლიები — 4 პროცედურის შემდეგ", captionUk: "Пахви — після 4 процедур", captionEn: "Underarms — after 4 sessions" },
+  { afterImage: own("balayage"), captionKa: "ბალაიაჟი", captionRu: "Балаяж", captionEn: "Balayage" },
+  { afterImage: own("updo"), captionKa: "საღამოს ვარცხნილობა", captionRu: "Вечерняя причёска", captionEn: "Evening hairstyle" },
+  { afterImage: own("bride"), captionKa: "საქორწილო იმიჯი", captionRu: "Свадебный образ", captionEn: "Bridal look" },
+  { afterImage: own("bob-color"), captionKa: "შეჭრა და შეღებვა", captionRu: "Стрижка и окрашивание", captionEn: "Cut & colour" },
+  { afterImage: own("makeup-mirror"), captionKa: "მაკიაჟი და დახვეული თმა", captionRu: "Макияж и локоны", captionEn: "Makeup & curls" },
+  { afterImage: own("nails-green"), captionKa: "მანიკური", captionRu: "Маникюр", captionEn: "Manicure" },
 ];
 
 const faq = [
   {
-    questionKa: "მტკივნეულია?", questionUk: "Чи боляче?", questionEn: "Does it hurt?",
-    answerKa: "ჩვენი ლაზერი აღჭურვილია გაგრილების სისტემით, ამიტომ შეგრძნებები მინიმალურია — მსუბუქი სითბო ან ჩხვლეტა. ტკივილის ზღურბლი ინდივიდუალურია, ამიტომ პარამეტრებს თქვენზე ვარჩევთ.",
-    answerUk: "Наш лазер має систему охолодження, тож відчуття мінімальні — легке тепло чи поколювання. Больовий поріг у всіх різний, тому ми підбираємо параметри індивідуально.",
-    answerEn: "Our laser has a built-in cooling system, so you'll feel only mild warmth or tingling. Everyone's pain threshold is different, so we adjust the settings to you.",
+    questionKa: "როგორ ჩავეწერო?", questionRu: "Как записаться?", questionEn: "How can I book?",
+    answerKa: "დააჭირეთ ღილაკს „ჩაწერა“ საიტზე, დაგვირეკეთ ან მოგვწერეთ WhatsApp-ზე. ჩვენ დაგიკავშირდებით და დაგიდასტურებთ დროს.",
+    answerRu: "Нажмите «Записаться» на сайте, позвоните нам или напишите в WhatsApp. Мы свяжемся с вами и подтвердим время.",
+    answerEn: "Press “Book” on the website, call us or message us on WhatsApp. We will get back to you and confirm the time.",
   },
   {
-    questionKa: "რამდენი პროცედურაა საჭირო?", questionUk: "Скільки процедур потрібно?", questionEn: "How many sessions do I need?",
-    answerKa: "როგორც წესი, 6–8 პროცედურა 4–8 კვირის ინტერვალით. ზუსტი რაოდენობა დამოკიდებულია ზონაზე, თმის ტიპზე და ჰორმონალურ ფონზე.",
-    answerUk: "Зазвичай 6–8 процедур з інтервалом 4–8 тижнів. Точна кількість залежить від зони, типу волосся та гормонального фону.",
-    answerEn: "Usually 6–8 sessions, 4–8 weeks apart. The exact number depends on the area, hair type and hormonal background.",
+    questionKa: "როდის მუშაობთ?", questionRu: "Когда вы работаете?", questionEn: "What are your opening hours?",
+    answerKa: "ყოველდღე 09:30-დან 19:00-მდე, გარდა ოთხშაბათისა — ოთხშაბათი დასვენების დღეა.",
+    answerRu: "Каждый день с 09:30 до 19:00, кроме среды — среда у нас выходной.",
+    answerEn: "Every day from 09:30 to 19:00 except Wednesday, which is our day off.",
   },
   {
-    questionKa: "როდის ჩანს შედეგი?", questionUk: "Коли видно результат?", questionEn: "When will I see results?",
-    answerKa: "პირველი შედეგი ჩანს 2–3 კვირაში პირველი პროცედურის შემდეგ — თმა ცვივა და ნელა იზრდება. ყოველი პროცედურის შემდეგ თმა სულ უფრო ნაკლები და თხელია.",
-    answerUk: "Перший результат помітний через 2–3 тижні після першої процедури — волосся випадає й росте повільніше. З кожною процедурою його стає менше, і воно тоншає.",
-    answerEn: "The first results appear 2–3 weeks after your first session — hair falls out and grows back slower. With every session there is less hair and it becomes finer.",
+    questionKa: "შემიძლია კონკრეტული ოსტატის არჩევა?", questionRu: "Можно выбрать конкретного мастера?", questionEn: "Can I choose a specific master?",
+    answerKa: "რა თქმა უნდა. მიუთითეთ ოსტატის სახელი ჩაწერის ფორმის კომენტარში ან გვითხარით ზარის დროს.",
+    answerRu: "Конечно. Укажите имя мастера в комментарии к заявке или скажите нам по телефону.",
+    answerEn: "Of course. Mention the master's name in the booking comment or tell us on the phone.",
   },
   {
-    questionKa: "შეიძლება ზაფხულში?", questionUk: "Чи можна влітку?", questionEn: "Can I do it in summer?",
-    answerKa: "დიახ, თანამედროვე დიოდური ლაზერი საშუალებას იძლევა პროცედურები ზაფხულშიც ჩატარდეს. მთავარია, მზეზე არ გარუჯოთ ზონა პროცედურამდე და შემდეგ 2 კვირის განმავლობაში და გამოიყენოთ SPF 50.",
-    answerUk: "Так, сучасний діодний лазер дозволяє робити процедури й улітку. Головне — не засмагати 2 тижні до та після процедури та використовувати SPF 50.",
-    answerEn: "Yes — a modern diode laser allows treatments in summer too. Just avoid tanning for 2 weeks before and after each session and use SPF 50.",
+    questionKa: "აკეთებთ საქორწილო ვარცხნილობასა და მაკიაჟს?", questionRu: "Делаете свадебные причёски и макияж?", questionEn: "Do you do bridal hair and makeup?",
+    answerKa: "დიახ. გირჩევთ წინასწარ ჩაწერას და საცდელ ვიზიტს, რომ ქორწილის დღეს ყველაფერი იდეალური იყოს.",
+    answerRu: "Да. Рекомендуем записаться заранее и прийти на пробный образ, чтобы в день свадьбы всё было идеально.",
+    answerEn: "Yes. We recommend booking early and coming for a trial so everything is perfect on your wedding day.",
+  },
+  {
+    questionKa: "რამდენ ხანს გრძელდება პროცედურა?", questionRu: "Сколько длится процедура?", questionEn: "How long does a visit take?",
+    answerKa: "სავარაუდო ხანგრძლივობა მითითებულია თითოეულ სერვისთან ფასების გვერდზე. ზუსტ დროს ოსტატი დაგიზუსტებთ.",
+    answerRu: "Примерная длительность указана у каждой услуги на странице цен. Точное время уточнит мастер.",
+    answerEn: "The approximate duration is listed next to every service on the prices page. Your master will confirm the exact time.",
   },
 ];
 
@@ -172,30 +188,30 @@ async function main() {
     console.warn("! ADMIN_EMAIL / ADMIN_PASSWORD not set — no admin created");
   }
 
-  // CMS defaults (only missing keys, never overwrite edits)
+  const version = await prisma.setting.findUnique({ where: { key: "contentVersion" } });
+  const reset = version?.value !== CONTENT_VERSION;
+  const KEEP_SETTINGS = new Set(["metaPixelId", "gaId"]);
+
+  // CMS texts & settings: create missing keys; on a content reset also overwrite existing ones.
   for (const f of TEXT_FIELDS) {
-    await prisma.siteText.upsert({ where: { key: f.key }, create: { key: f.key, ka: f.ka, uk: f.uk, en: f.en }, update: {} });
+    const row = { ka: f.ka, ru: f.ru, en: f.en };
+    await prisma.siteText.upsert({ where: { key: f.key }, create: { key: f.key, ...row }, update: reset ? row : {} });
   }
   for (const f of SETTING_FIELDS) {
-    await prisma.setting.upsert({ where: { key: f.key }, create: { key: f.key, value: f.default }, update: {} });
+    const overwrite = reset && !KEEP_SETTINGS.has(f.key);
+    await prisma.setting.upsert({ where: { key: f.key }, create: { key: f.key, value: f.default }, update: overwrite ? { value: f.default } : {} });
   }
-  console.log("✔ Site texts & settings");
+  console.log(reset ? `✔ Site texts & settings replaced (content ${CONTENT_VERSION})` : "✔ Site texts & settings");
+
+  if (reset) {
+    // Old services are removed; their bookings keep the service name snapshot.
+    await prisma.$transaction([prisma.service.deleteMany(), prisma.testimonial.deleteMany(), prisma.beforeAfter.deleteMany(), prisma.faqItem.deleteMany()]);
+  }
 
   // Demo content — each collection is seeded only while it is empty.
   if ((await prisma.service.count()) === 0) {
     await prisma.service.createMany({ data: services.map((s, i) => ({ ...s, sortOrder: i * 10 })) });
     console.log(`✔ ${services.length} services`);
-
-    const legs = await prisma.service.findUnique({ where: { slug: "full-legs" } });
-    const underarms = await prisma.service.findUnique({ where: { slug: "underarms" } });
-    const day = (n: number) => new Date(`${new Date(Date.now() + n * 86_400_000).toISOString().slice(0, 10)}T00:00:00Z`);
-    await prisma.booking.createMany({
-      data: [
-        { fullName: "Nino Beridze", phone: "+995 599 11 22 33", serviceId: legs?.id, serviceName: "Full legs", date: day(2), time: "12:00", message: "First visit, I would like a consultation.", locale: "ka" },
-        { fullName: "Kateryna Shevchenko", phone: "+380 67 123 45 67", serviceId: underarms?.id, serviceName: "Underarms", date: day(4), time: "17:00", locale: "uk", status: "CONFIRMED" },
-      ],
-    });
-    console.log("✔ Demo bookings");
   }
   if ((await prisma.testimonial.count()) === 0) {
     await prisma.testimonial.createMany({ data: testimonials.map((t, i) => ({ ...t, sortOrder: i * 10 })) });
@@ -203,12 +219,14 @@ async function main() {
   }
   if ((await prisma.beforeAfter.count()) === 0) {
     await prisma.beforeAfter.createMany({ data: results.map((r, i) => ({ ...r, sortOrder: i * 10 })) });
-    console.log(`✔ ${results.length} before/after pairs (placeholders)`);
+    console.log(`✔ ${results.length} portfolio items`);
   }
   if ((await prisma.faqItem.count()) === 0) {
     await prisma.faqItem.createMany({ data: faq.map((f, i) => ({ ...f, sortOrder: i * 10 })) });
     console.log(`✔ ${faq.length} FAQ items`);
   }
+
+  await prisma.setting.upsert({ where: { key: "contentVersion" }, create: { key: "contentVersion", value: CONTENT_VERSION }, update: { value: CONTENT_VERSION } });
 }
 
 main()

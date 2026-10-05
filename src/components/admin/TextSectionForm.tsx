@@ -7,7 +7,7 @@ import { AdminField, Card, FormMessage, inputClass, LANGS, SubmitButton } from "
 
 type Props = {
   section: TextSection;
-  values: Record<string, { ka: string; uk: string; en: string }>;
+  values: Record<string, { ka: string; ru: string; en: string }>;
   action: (state: ActionState, formData: FormData) => Promise<ActionState>;
 };
 
@@ -36,7 +36,7 @@ export function TextSectionForm({ section, values, action }: Props) {
         </div>
         <div className="space-y-6">
           {section.fields.map((field) => {
-            const v = values[field.key] ?? { ka: field.ka, uk: field.uk, en: field.en };
+            const v = values[field.key] ?? { ka: field.ka, ru: field.ru, en: field.en };
             const Input = field.multiline ? "textarea" : "input";
             return (
               <fieldset key={field.key}>

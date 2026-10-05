@@ -8,7 +8,7 @@ export async function notifyTelegram(lines: [label: string, value: string | null
   const chatId = process.env.TELEGRAM_CHAT_ID;
   if (!token || !chatId) return;
 
-  const text = ["<b>🌸 New booking request</b>", "", ...lines.filter(([, v]) => v).map(([k, v]) => `<b>${escape(k)}:</b> ${escape(v!)}`)].join("\n");
+  const text = ["<b>🌸 Новая заявка / New booking</b>", "", ...lines.filter(([, v]) => v).map(([k, v]) => `<b>${escape(k)}:</b> ${escape(v!)}`)].join("\n");
   try {
     const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
       method: "POST",

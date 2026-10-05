@@ -1,9 +1,9 @@
-import { Gem, HeartHandshake, ShieldCheck, Sofa, Zap } from "lucide-react";
+import { Award, Droplets, HeartHandshake, Sofa, Sparkles } from "lucide-react";
 import type { SiteTexts } from "@/lib/content";
 import { Reveal } from "../ui/Reveal";
 import { SectionHeading } from "./SectionHeading";
 
-const ICONS = [Zap, ShieldCheck, Gem, HeartHandshake, Sofa];
+const ICONS = [Award, Droplets, Sparkles, HeartHandshake, Sofa];
 
 export function Advantages({ t }: { t: SiteTexts }) {
   return (

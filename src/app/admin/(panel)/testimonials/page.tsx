@@ -49,9 +49,9 @@ export default async function TestimonialsAdminPage({ searchParams }: { searchPa
                   </span>
                   {!r.isVisible && <HiddenBadge />}
                 </div>
-                <p className="mt-1 line-clamp-2 text-sm text-cocoa/60">{r.textUk || r.textEn || r.textKa}</p>
+                <p className="mt-1 line-clamp-2 text-sm text-cocoa/60">{r.textRu || r.textEn || r.textKa}</p>
                 <p className="mt-1 text-[11px] uppercase tracking-wider text-cocoa/45">
-                  {[r.textKa && "KA", r.textUk && "UK", r.textEn && "EN"].filter(Boolean).join(" · ")}
+                  {[r.textKa && "KA", r.textRu && "RU", r.textEn && "EN"].filter(Boolean).join(" · ")}
                 </p>
               </div>
               <RowActions

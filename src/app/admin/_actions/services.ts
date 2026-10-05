@@ -10,7 +10,7 @@ import { fieldErrors, serviceSchema } from "@/lib/validation";
 import { FIX_FIELDS, readForm } from "./_helpers";
 import type { ActionState } from "./types";
 
-const KEYS = ["nameKa", "nameUk", "nameEn", "descriptionKa", "descriptionUk", "descriptionEn", "category", "price", "durationMin", "image", "sortOrder"];
+const KEYS = ["nameKa", "nameRu", "nameEn", "descriptionKa", "descriptionRu", "descriptionEn", "category", "price", "durationMin", "image", "sortOrder"];
 
 function parse(formData: FormData) {
   const raw = readForm(formData, KEYS, ["isVisible"]);

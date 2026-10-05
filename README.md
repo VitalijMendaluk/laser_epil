@@ -1,8 +1,8 @@
-# Lumière Laser Studio — Laser Hair Removal in Kutaisi
+# Vizuali Beauty Salon — Kutaisi
 
-Premium trilingual (🇬🇪 ქართული / 🇺🇦 Українська / 🇬🇧 English) website for a laser hair removal studio in Kutaisi, Georgia, with a built-in admin panel / CMS.
+Trilingual (🇬🇪 ქართული / 🇷🇺 Русский / 🇬🇧 English) website for **Vizuali** beauty salon (9 Varlamishvili St, Kutaisi) with a built-in admin panel / CMS.
 
-> "Lumière Laser Studio", contacts and photos are **placeholders** — change them in `/admin`.
+> Contacts, hours and salon photos come from the salon's Google Maps listing (photos in `public/images/vizuali`). Prices are placeholders — update them in **Admin → Services & prices**.
 
 **Stack:** Next.js 15 (App Router) · TypeScript (strict) · Tailwind CSS 4 · Framer Motion · next-intl · PostgreSQL · Prisma · JWT sessions (jose) · bcrypt · Zod · Cloudinary · Cloudflare Turnstile · Telegram Bot API
 
@@ -10,9 +10,9 @@ Premium trilingual (🇬🇪 ქართული / 🇺🇦 Українськ
 
 ## Features
 
-**Website** (`/ka` — default, `/uk`, `/en`)
-- Home: Hero (Book Appointment + WhatsApp), About, Services catalog (women / men filter), Why choose us (5 advantages), How the procedure works (4 steps), Before / After (drag-to-compare slider), Testimonials carousel, FAQ, booking CTA, Contacts with Google Maps + Call / WhatsApp buttons
-- `/prices` — price table (service · duration · price), grouped by women / men
+**Website** (`/ka` — default, `/ru`, `/en`)
+- Home: Hero, About, Services catalog (filter: Hair / Nails / Makeup / Brows & lashes / Care), Why choose us, How to book (4 steps), Portfolio (single photos or before/after slider), Testimonials, FAQ, booking CTA, Contacts with Google Maps
+- `/prices` — price table (service · duration · price), grouped by category
 - **Booking popup** — Name*, Phone*, Service*, Preferred date*, Preferred time* (slots from admin), Message → "Thank you! We will contact you soon."
 - Floating WhatsApp + Instagram buttons, sticky "Book" button on mobile
 - Marketing: Meta Pixel (`PageView`, `Lead` on booking, `Contact` on WhatsApp/phone/Instagram clicks, custom `BookingOpen`), Google Analytics 4 (`generate_lead`, `contact`, `booking_open`) — IDs are entered in the admin
@@ -21,11 +21,11 @@ Premium trilingual (🇬🇪 ქართული / 🇺🇦 Українськ
 **Admin panel** (`/admin`)
 - Dashboard — total requests, new requests, upcoming visits, last 7 days, **popular services**, requests by status, latest requests
 - Bookings — table with search, status filter (**New / Confirmed / Completed / Cancelled**), "Upcoming visits" view sorted by date, status change, delete, quick Call / WhatsApp
-- Services & prices — CRUD (name & description in 3 languages, category, price, duration, photo, sort order, show/hide) + quick price/duration edit right in the list
+- Services & prices — CRUD (name & description in KA/RU/EN, category, price, duration, photo, sort order, show/hide) + quick price/duration edit right in the list
 - Testimonials — CRUD (photo, name, text in 3 languages, rating 1–5)
-- Before / After — CRUD (before + after photo, caption in 3 languages)
+- Portfolio — CRUD (work photo, optional “before” photo for a compare slider, caption in 3 languages)
 - FAQ — CRUD (question & answer in 3 languages)
-- Site texts — every text block in 3 languages: Hero, About, Services, Prices, Advantages, Process, Results, Testimonials, FAQ, Contacts, CTA, Footer
+- Site texts — every text block in 3 languages: Hero, About, Services, Prices, Advantages, How to book, Portfolio, Testimonials, FAQ, Contacts, CTA, Footer
 - Contacts & settings — phone, WhatsApp, email, Instagram, Facebook, Google Maps, booking time slots, studio name, currency, images, **Meta Pixel ID, GA4 ID**
 - SEO — meta title / description / keywords for each page in each language, Open Graph image
 
@@ -46,14 +46,14 @@ Premium trilingual (🇬🇪 ქართული / 🇺🇦 Українськ
 
 ```
 prisma/
-  schema.prisma          # Admin, Service, Booking, Testimonial, BeforeAfter, FaqItem, SiteText (ka/uk/en), Setting
+  schema.prisma          # Admin, Service, Booking, Testimonial, BeforeAfter, FaqItem, SiteText (ka/ru/en), Setting
   migrations/            # SQL migrations
   seed.ts                # admin + default texts/settings + demo services, reviews, FAQ, before/after
 scripts/create-admin.ts  # create admin / reset password
 src/
   middleware.ts          # locale routing + admin protection
-  i18n/                  # next-intl routing (ka, uk, en), navigation, request config
-  messages/ka|uk|en.json # UI strings (buttons, form labels, errors)
+  i18n/                  # next-intl routing (ka, ru, en), navigation, request config
+  messages/ka|ru|en.json # UI strings (buttons, form labels, errors)
   lib/
     content-schema.ts    # ⭐ list of all CMS texts & settings with defaults (3 languages)
     content.ts           # cached data access (texts, settings, services, reviews, FAQ, results)
@@ -112,6 +112,10 @@ Change the admin password: `npm run admin:create -- admin "NewStrongPassword"`
 | `npm run admin:create -- <login> "<password>"` | Create admin / reset password |
 
 ---
+
+## Content updates on deploy
+
+`prisma/seed.ts` has a `CONTENT_VERSION`. When it changes, the next deploy replaces texts, settings (except Pixel/GA IDs), services, reviews, portfolio and FAQ **once** with the seed data, then never overwrites admin edits again. Bookings and admins are always kept. Leave the version unchanged unless you intend to reset the content.
 
 ## Integrations
 

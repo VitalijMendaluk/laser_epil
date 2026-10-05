@@ -14,7 +14,7 @@ export default async function NewTestimonialPage() {
       <div className="mt-3">
         <PageHeader title="Add review" />
       </div>
-      <TestimonialForm action={createTestimonialAction} submitLabel="Add review" initial={{ name: "", photo: "", textKa: "", textUk: "", textEn: "", rating: 5, isVisible: true, sortOrder: 0 }} />
+      <TestimonialForm action={createTestimonialAction} submitLabel="Add review" initial={{ name: "", photo: "", textKa: "", textRu: "", textEn: "", rating: 5, isVisible: true, sortOrder: 0 }} />
     </>
   );
 }

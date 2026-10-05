@@ -12,7 +12,7 @@ export default async function SeoPage() {
   await requireAdmin();
   const section = TEXT_SECTIONS.find((s) => s.id === "seo")!;
   const [texts, settings] = await Promise.all([prisma.siteText.findMany({ where: { key: { startsWith: "seo." } } }), prisma.setting.findMany({ where: { key: "ogImage" } })]);
-  const values = Object.fromEntries(texts.map((r) => [r.key, { ka: r.ka, uk: r.uk, en: r.en }]));
+  const values = Object.fromEntries(texts.map((r) => [r.key, { ka: r.ka, ru: r.ru, en: r.en }]));
   const ogField = SETTING_FIELDS.filter((f) => f.key === "ogImage");
 
   return (

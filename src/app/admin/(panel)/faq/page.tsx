@@ -41,7 +41,7 @@ export default async function FaqAdminPage({ searchParams }: { searchParams: Pro
                   <Link href={`/admin/faq/${r.id}`} className="font-medium hover:text-gold-dark">{r.questionEn}</Link>
                   {!r.isVisible && <HiddenBadge />}
                 </div>
-                <p className="mt-1 truncate text-sm text-cocoa/60">{r.questionUk}</p>
+                <p className="mt-1 truncate text-sm text-cocoa/60">{r.questionRu}</p>
               </div>
               <RowActions href={`/admin/faq/${r.id}`} isVisible={r.isVisible} onToggle={toggleFaqVisibilityAction.bind(null, r.id)} onDelete={deleteFaqAction.bind(null, r.id)} confirm="Delete this question?" />
             </div>

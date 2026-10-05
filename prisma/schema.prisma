@@ -8,8 +8,11 @@ datasource db {
 }
 
 enum ServiceCategory {
-  WOMEN
-  MEN
+  HAIR
+  NAILS
+  MAKEUP
+  BROWS_LASHES
+  CARE
 }
 
 enum BookingStatus {
@@ -28,17 +31,17 @@ model Admin {
   updatedAt    DateTime @updatedAt
 }
 
-/// A laser procedure (e.g. "Full legs"). Name/description in ka/uk/en.
+/// A salon service (e.g. "Balayage"). Name/description in ka/ru/en.
 model Service {
   id            String          @id @default(cuid())
   slug          String          @unique
   nameKa        String
-  nameUk        String
+  nameRu        String
   nameEn        String
   descriptionKa String          @default("")
-  descriptionUk String          @default("")
+  descriptionRu String          @default("")
   descriptionEn String          @default("")
-  category      ServiceCategory @default(WOMEN)
+  category      ServiceCategory @default(HAIR)
   price         Int
   durationMin   Int
   image         String          @default("")
@@ -76,7 +79,7 @@ model Testimonial {
   name      String
   photo     String   @default("")
   textKa    String   @default("")
-  textUk    String   @default("")
+  textRu    String   @default("")
   textEn    String   @default("")
   rating    Int      @default(5)
   isVisible Boolean  @default(true)
@@ -87,10 +90,10 @@ model Testimonial {
 
 model BeforeAfter {
   id          String   @id @default(cuid())
-  beforeImage String
+  beforeImage String   @default("")
   afterImage  String
   captionKa   String   @default("")
-  captionUk   String   @default("")
+  captionRu   String   @default("")
   captionEn   String   @default("")
   isVisible   Boolean  @default(true)
   sortOrder   Int      @default(0)
@@ -101,10 +104,10 @@ model BeforeAfter {
 model FaqItem {
   id         String   @id @default(cuid())
   questionKa String
-  questionUk String
+  questionRu String
   questionEn String
   answerKa   String
-  answerUk   String
+  answerRu   String
   answerEn   String
   isVisible  Boolean  @default(true)
   sortOrder  Int      @default(0)
@@ -116,7 +119,7 @@ model FaqItem {
 model SiteText {
   key       String   @id
   ka        String
-  uk        String
+  ru        String
   en        String
   updatedAt DateTime @updatedAt
 }

@@ -6,6 +6,23 @@ import { useRef, useState, type PointerEvent } from "react";
 
 /** Draggable before/after comparison. Keyboard accessible via the range input. */
 export function BeforeAfterSlider({ before, after, caption }: { before: string; after: string; caption: string }) {
+  if (!before) return <WorkPhoto src={after} caption={caption} />;
+  return <Compare before={before} after={after} caption={caption} />;
+}
+
+/** A single portfolio photo (no "before" image). */
+function WorkPhoto({ src, caption }: { src: string; caption: string }) {
+  return (
+    <figure>
+      <div className="group relative aspect-[4/5] overflow-hidden rounded-[1.75rem] bg-nude">
+        <Image src={src} alt={caption} fill sizes="(min-width: 1024px) 420px, 90vw" className="object-cover transition-transform duration-[1.4s] ease-lux group-hover:scale-105" />
+      </div>
+      {caption && <figcaption className="mt-4 text-center font-display text-xl text-cocoa-2">{caption}</figcaption>}
+    </figure>
+  );
+}
+
+function Compare({ before, after, caption }: { before: string; after: string; caption: string }) {
   const t = useTranslations("results");
   const [pos, setPos] = useState(50);
   const box = useRef<HTMLDivElement>(null);

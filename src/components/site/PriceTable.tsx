@@ -1,5 +1,6 @@
 import { Clock } from "lucide-react";
 import { getTranslations } from "next-intl/server";
+import { CATEGORIES } from "@/lib/categories";
 import type { LocalizedService } from "@/lib/content";
 import { formatPrice } from "@/lib/utils";
 import { Reveal } from "../ui/Reveal";
@@ -9,7 +10,7 @@ export async function PriceTable({ services, currency }: { services: LocalizedSe
   const t = await getTranslations();
   if (services.length === 0) return <p className="py-24 text-center text-taupe">{t("prices.empty")}</p>;
 
-  const groups = (["WOMEN", "MEN"] as const).map((c) => ({ category: c, items: services.filter((s) => s.category === c) })).filter((g) => g.items.length);
+  const groups = CATEGORIES.map((c) => ({ category: c, items: services.filter((s) => s.category === c) })).filter((g) => g.items.length);
 
   return (
     <div className="space-y-14">

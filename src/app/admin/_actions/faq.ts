@@ -9,7 +9,7 @@ import { faqSchema, fieldErrors } from "@/lib/validation";
 import { FIX_FIELDS, readForm } from "./_helpers";
 import type { ActionState } from "./types";
 
-const KEYS = ["questionKa", "questionUk", "questionEn", "answerKa", "answerUk", "answerEn", "sortOrder"];
+const KEYS = ["questionKa", "questionRu", "questionEn", "answerKa", "answerRu", "answerEn", "sortOrder"];
 
 function parse(formData: FormData) {
   const raw = readForm(formData, KEYS, ["isVisible"]);

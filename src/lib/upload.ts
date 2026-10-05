@@ -31,7 +31,7 @@ export async function storeImage(buffer: Buffer, ext: string): Promise<string> {
     const result = await new Promise<{ secure_url: string }>((resolve, reject) => {
       cloudinary.uploader
         .upload_stream(
-          { folder: process.env.CLOUDINARY_FOLDER || "laser-studio", resource_type: "image", transformation: [{ width: 2400, crop: "limit", quality: "auto" }] },
+          { folder: process.env.CLOUDINARY_FOLDER || "vizuali", resource_type: "image", transformation: [{ width: 2400, crop: "limit", quality: "auto" }] },
           (error, res) => (error || !res ? reject(error ?? new Error("Upload failed")) : resolve(res)),
         )
         .end(buffer);

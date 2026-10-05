@@ -30,10 +30,10 @@ export default async function EditServicePage({ params }: { params: Promise<{ id
         submitLabel="Save changes"
         initial={{
           nameKa: s.nameKa,
-          nameUk: s.nameUk,
+          nameRu: s.nameRu,
           nameEn: s.nameEn,
           descriptionKa: s.descriptionKa,
-          descriptionUk: s.descriptionUk,
+          descriptionRu: s.descriptionRu,
           descriptionEn: s.descriptionEn,
           category: s.category,
           price: s.price,

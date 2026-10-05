@@ -9,7 +9,7 @@ import { fieldErrors, testimonialSchema } from "@/lib/validation";
 import { FIX_FIELDS, readForm } from "./_helpers";
 import type { ActionState } from "./types";
 
-const KEYS = ["name", "photo", "textKa", "textUk", "textEn", "rating", "sortOrder"];
+const KEYS = ["name", "photo", "textKa", "textRu", "textEn", "rating", "sortOrder"];
 
 function parse(formData: FormData) {
   const raw = readForm(formData, KEYS, ["isVisible"]);

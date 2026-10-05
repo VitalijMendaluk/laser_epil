@@ -32,7 +32,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "captcha" }, { status: 400 });
   }
 
-  const service = await prisma.service.findFirst({ where: { id: data.serviceId, isVisible: true }, select: { id: true, nameEn: true, nameUk: true, price: true } });
+  const service = await prisma.service.findFirst({ where: { id: data.serviceId, isVisible: true }, select: { id: true, nameEn: true, nameRu: true, price: true } });
   if (!service) return NextResponse.json({ errors: { serviceId: "serviceRequired" } }, { status: 422 });
 
   await prisma.booking.create({
@@ -49,12 +49,12 @@ export async function POST(req: Request) {
   });
 
   await notifyTelegram([
-    ["Name", data.fullName],
-    ["Phone", data.phone],
-    ["Service", `${service.nameEn} / ${service.nameUk}`],
-    ["Date", `${data.date.split("-").reverse().join(".")} ${data.time}`],
-    ["Message", data.message],
-    ["Language", data.locale.toUpperCase()],
+    ["Имя", data.fullName],
+    ["Телефон", data.phone],
+    ["Услуга", service.nameRu],
+    ["Дата", `${data.date.split("-").reverse().join(".")} ${data.time}`],
+    ["Сообщение", data.message],
+    ["Язык сайта", data.locale.toUpperCase()],
   ]);
 
   return NextResponse.json({ ok: true }, { status: 201 });

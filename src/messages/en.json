@@ -4,7 +4,7 @@
     "services": "Services",
     "prices": "Prices",
     "about": "About",
-    "results": "Results",
+    "results": "Works",
     "reviews": "Reviews",
     "faq": "FAQ",
     "contact": "Contact",
@@ -26,8 +26,11 @@
     "duration": "Duration",
     "price": "Price",
     "all": "All",
-    "WOMEN": "For women",
-    "MEN": "For men",
+    "HAIR": "Hair",
+    "NAILS": "Nails",
+    "MAKEUP": "Makeup",
+    "BROWS_LASHES": "Brows & lashes",
+    "CARE": "Skin & body",
     "book": "Book"
   },
   "prices": {
@@ -47,7 +50,7 @@
     "time": "Preferred time",
     "chooseTime": "Choose time",
     "message": "Message",
-    "messagePlaceholder": "Questions, wishes or a convenient time to call…",
+    "messagePlaceholder": "Wishes, preferred master or a convenient time to call…",
     "submit": "Send Request",
     "sending": "Sending…",
     "thanksTitle": "Request sent",
@@ -87,7 +90,8 @@
   "reviews": {
     "rating": "Rated {rating} out of 5",
     "prev": "Previous review",
-    "next": "Next review"
+    "next": "Next review",
+    "source": "Google review"
   },
   "footer": {
     "navigation": "Navigation",

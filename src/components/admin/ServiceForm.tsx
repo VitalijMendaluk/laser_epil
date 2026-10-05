@@ -1,18 +1,19 @@
 "use client";
 
 import type { ActionState } from "@/app/admin/_actions/types";
+import { CATEGORIES, CATEGORY_LABELS, type Category } from "@/lib/categories";
 import { ImageUploader } from "./ImageUploader";
 import { AdminField, Card, inputClass, LangFields, StickySave, VisibilityAndOrder } from "./ui";
 import { useFormAction } from "./useFormAction";
 
 export type ServiceFormValues = {
   nameKa: string;
-  nameUk: string;
+  nameRu: string;
   nameEn: string;
   descriptionKa: string;
-  descriptionUk: string;
+  descriptionRu: string;
   descriptionEn: string;
-  category: "WOMEN" | "MEN";
+  category: Category;
   price: number | "";
   durationMin: number | "";
   image: string;
@@ -50,8 +51,11 @@ export function ServiceForm({ action, initial, submitLabel }: Props) {
           </AdminField>
           <AdminField label="Category" error={e.category}>
             <select name="category" defaultValue={initial.category} className={inputClass}>
-              <option value="WOMEN">For women</option>
-              <option value="MEN">For men</option>
+              {CATEGORIES.map((c) => (
+                <option key={c} value={c}>
+                  {CATEGORY_LABELS[c]}
+                </option>
+              ))}
             </select>
           </AdminField>
         </div>

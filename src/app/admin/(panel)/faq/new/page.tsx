@@ -14,7 +14,7 @@ export default async function NewFaqPage() {
       <div className="mt-3">
         <PageHeader title="Add question" />
       </div>
-      <FaqForm action={createFaqAction} submitLabel="Add question" initial={{ questionKa: "", questionUk: "", questionEn: "", answerKa: "", answerUk: "", answerEn: "", isVisible: true, sortOrder: 0 }} />
+      <FaqForm action={createFaqAction} submitLabel="Add question" initial={{ questionKa: "", questionRu: "", questionEn: "", answerKa: "", answerRu: "", answerEn: "", isVisible: true, sortOrder: 0 }} />
     </>
   );
 }

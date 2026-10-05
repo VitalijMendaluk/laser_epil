@@ -9,7 +9,7 @@ export type TestimonialFormValues = {
   name: string;
   photo: string;
   textKa: string;
-  textUk: string;
+  textRu: string;
   textEn: string;
   rating: number;
   isVisible: boolean;

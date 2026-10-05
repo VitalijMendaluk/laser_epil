@@ -9,7 +9,7 @@ export type ResultFormValues = {
   beforeImage: string;
   afterImage: string;
   captionKa: string;
-  captionUk: string;
+  captionRu: string;
   captionEn: string;
   isVisible: boolean;
   sortOrder: number;
@@ -27,19 +27,19 @@ export function ResultForm({ action, initial, submitLabel }: Props) {
 
   return (
     <form onSubmit={onSubmit} className="space-y-6">
-      <Card title="Photos" description="Use photos of the same area, angle and lighting. Portrait (4:5) photos look best.">
+      <Card title="Photos" description="Add only the “After” photo for a regular portfolio picture. Add a “Before” photo too to show a before/after slider. Portrait (4:5) photos look best.">
         <div className="grid gap-6 md:grid-cols-2">
-          <AdminField label="Before *" error={e.beforeImage}>
+          <AdminField label="Before (optional)" error={e.beforeImage}>
             <ImageUploader name="beforeImage" defaultValue={initial.beforeImage ? [initial.beforeImage] : []} />
           </AdminField>
-          <AdminField label="After *" error={e.afterImage}>
+          <AdminField label="After / work photo *" error={e.afterImage}>
             <ImageUploader name="afterImage" defaultValue={initial.afterImage ? [initial.afterImage] : []} />
           </AdminField>
         </div>
       </Card>
 
       <Card title="Description">
-        <LangFields base="caption" label="Caption (e.g. “Underarms — after 5 sessions”)" values={initial as unknown as Record<string, string>} errors={e} />
+        <LangFields base="caption" label="Caption (e.g. “Balayage”, “Bridal hairstyle”)" values={initial as unknown as Record<string, string>} errors={e} />
         <div className="mt-6">
           <VisibilityAndOrder isVisible={initial.isVisible} sortOrder={initial.sortOrder} errors={e} />
         </div>

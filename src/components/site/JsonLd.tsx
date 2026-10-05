@@ -14,8 +14,12 @@ export function JsonLd({ t, settings, locale, services }: { t: SiteTexts; settin
     email: settings.email || undefined,
     image: settings.ogImage || undefined,
     priceRange: "$$",
-    address: { "@type": "PostalAddress", streetAddress: t["contact.address"], addressLocality: "Kutaisi", addressCountry: "GE" },
+    address: { "@type": "PostalAddress", streetAddress: t["contact.address"], addressLocality: "Kutaisi", postalCode: "4600", addressCountry: "GE" },
     areaServed: { "@type": "City", name: "Kutaisi" },
+    geo: { "@type": "GeoCoordinates", latitude: 42.2736491, longitude: 42.7048594 },
+    openingHoursSpecification: [
+      { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday", "Tuesday", "Thursday", "Friday", "Saturday", "Sunday"], opens: "09:30", closes: "19:00" },
+    ],
     sameAs: [settings.instagram, settings.facebook].filter(Boolean),
     hasOfferCatalog: {
       "@type": "OfferCatalog",

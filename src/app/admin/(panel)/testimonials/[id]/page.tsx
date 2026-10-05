@@ -24,7 +24,7 @@ export default async function EditTestimonialPage({ params }: { params: Promise<
       <TestimonialForm
         action={updateTestimonialAction.bind(null, r.id)}
         submitLabel="Save changes"
-        initial={{ name: r.name, photo: r.photo, textKa: r.textKa, textUk: r.textUk, textEn: r.textEn, rating: r.rating, isVisible: r.isVisible, sortOrder: r.sortOrder }}
+        initial={{ name: r.name, photo: r.photo, textKa: r.textKa, textRu: r.textRu, textEn: r.textEn, rating: r.rating, isVisible: r.isVisible, sortOrder: r.sortOrder }}
       />
     </>
   );

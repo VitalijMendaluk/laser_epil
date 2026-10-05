@@ -24,7 +24,7 @@ export default async function EditFaqPage({ params }: { params: Promise<{ id: st
       <FaqForm
         action={updateFaqAction.bind(null, r.id)}
         submitLabel="Save changes"
-        initial={{ questionKa: r.questionKa, questionUk: r.questionUk, questionEn: r.questionEn, answerKa: r.answerKa, answerUk: r.answerUk, answerEn: r.answerEn, isVisible: r.isVisible, sortOrder: r.sortOrder }}
+        initial={{ questionKa: r.questionKa, questionRu: r.questionRu, questionEn: r.questionEn, answerKa: r.answerKa, answerRu: r.answerRu, answerEn: r.answerEn, isVisible: r.isVisible, sortOrder: r.sortOrder }}
       />
     </>
   );

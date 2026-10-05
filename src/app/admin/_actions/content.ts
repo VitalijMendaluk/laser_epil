@@ -22,8 +22,8 @@ export async function saveTextSectionAction(sectionId: string, _prev: ActionStat
 
   const errors: Record<string, string> = {};
   const rows = section.fields.map((field) => {
-    const row = { key: field.key, ka: "", uk: "", en: "" };
-    for (const l of ["ka", "uk", "en"] as const) {
+    const row = { key: field.key, ka: "", ru: "", en: "" };
+    for (const l of ["ka", "ru", "en"] as const) {
       row[l] = String(formData.get(`${field.key}:${l}`) ?? "").trim();
       if (row[l].length > MAX_TEXT) errors[`${field.key}:${l}`] = "Too long";
     }
@@ -32,7 +32,7 @@ export async function saveTextSectionAction(sectionId: string, _prev: ActionStat
   if (Object.keys(errors).length) return { errors, message: "Please fix the highlighted fields" };
 
   await prisma.$transaction(
-    rows.map((r) => prisma.siteText.upsert({ where: { key: r.key }, create: r, update: { ka: r.ka, uk: r.uk, en: r.en } })),
+    rows.map((r) => prisma.siteText.upsert({ where: { key: r.key }, create: r, update: { ka: r.ka, ru: r.ru, en: r.en } })),
   );
   refresh();
   return { ok: true, message: `${section.title} saved` };
