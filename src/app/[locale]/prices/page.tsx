@@ -27,7 +27,7 @@ export default async function PricesPage({ params }: { params: Promise<{ locale:
 
   return (
     <div className="relative overflow-hidden">
-      <div className="pointer-events-none absolute -right-40 -top-40 h-[560px] w-[560px] rounded-full bg-nude/70 blur-3xl" aria-hidden />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_90%_0%,rgb(239_228_216/0.9),transparent_40%)]" aria-hidden />
       <div className="relative mx-auto max-w-5xl px-5 pb-24 pt-36 sm:px-8 sm:pt-44">
         <SectionHeading as="h1" eyebrow={t["prices.eyebrow"]} title={t["prices.title"] ?? ""} subtitle={t["prices.subtitle"]} className="mb-14" />
         <PriceTable services={services.map((s) => localizeService(s, locale))} currency={settings.currency} />

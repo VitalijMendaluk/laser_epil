@@ -107,3 +107,22 @@ html:lang(ka) .btn-outline,
 html:lang(ka) .btn-light {
   letter-spacing: 0.04em;
 }
+
+/*
+ * Entrance animations in pure CSS: they start with the first paint, before
+ * JavaScript loads, so the hero never sits hidden waiting for hydration.
+ */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes word-up {
+  from { transform: translateY(105%); }
+  to { transform: none; }
+}
+.anim-rise {
+  animation: rise 0.8s var(--ease-lux) both;
+}
+.anim-word {
+  animation: word-up 0.9s var(--ease-lux) both;
+}
